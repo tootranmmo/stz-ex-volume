@@ -19,6 +19,18 @@ class WebsiteAutomation {
         return result.singleNodeValue;
     }
 
+    // Get Element with Fallback XPaths (try multiple selectors)
+    getElementWithFallback(xpathArray) {
+        for (let xpath of xpathArray) {
+            const element = this.getElementByXpath(xpath);
+            if (element) {
+                console.log(`✓ Found element with: ${xpath}`);
+                return element;
+            }
+        }
+        return null;
+    }
+
     getAllElementsByXpath(xpath) {
         const result = document.evaluate(
             xpath,
@@ -69,12 +81,21 @@ class WebsiteAutomation {
 
     // ===== Keywords Input =====
     async addKeywords(keywords) {
-        const keywordInput = this.getElementByXpath(
-            "//input[@id='tags-input::r7R1::input' and @data-scope='tags-input' and @data-part='input']"
-        );
+        // Try multiple XPath variations
+        const keywordXPaths = [
+            "//input[@id='tags-input::r7R1::input' and @data-scope='tags-input' and @data-part='input']",
+            "//input[@data-scope='tags-input' and @data-part='input']",
+            "//input[@data-scope='tags-input']",
+            "//input[contains(@id, 'tags-input')]",
+            "//input[contains(@placeholder, 'keyword')]",
+            "//input[contains(@placeholder, 'add keyword')]"
+        ];
+
+        const keywordInput = this.getElementWithFallback(keywordXPaths);
 
         if (!keywordInput) {
-            throw new Error('Keyword input field not found. Make sure you\'re on https://searchvolume.com/');
+            console.error('Available inputs:', document.querySelectorAll('input').length);
+            throw new Error('Keyword input field not found. Website structure may have changed. Check console for details.');
         }
 
         for (let keyword of keywords) {
@@ -105,18 +126,35 @@ class WebsiteAutomation {
 
     // ===== Country Selection =====
     async selectCountry(country = 'Vietnam') {
-        const countryInput = this.getElementByXpath(
-            "//input[@id='combobox::r0::input' and @data-scope='combobox' and @data-part='input']"
-        );
+        // Try multiple XPath variations
+        const countryXPaths = [
+            "//input[@id='combobox::r0::input' and @data-scope='combobox' and @data-part='input']",
+            "//input[@data-scope='combobox' and @data-part='input']",
+            "//input[@data-scope='combobox']",
+            "//input[contains(@id, 'combobox')]",
+            "//input[contains(@placeholder, 'country')]"
+        ];
+
+        const countryInput = this.getElementWithFallback(countryXPaths);
 
         if (!countryInput) {
             throw new Error('Country input field not found');
         }
 
-        await this.setInputValue(
-            "//input[@id='combobox::r0::input' and @data-scope='combobox' and @data-part='input']",
-            country
-        );
+        // Focus and clear
+        countryInput.focus();
+        countryInput.value = '';
+        countryInput.dispatchEvent(new Event('input', { bubbles: true }));
+
+        // Type country
+        for (let char of country) {
+            countryInput.value += char;
+            countryInput.dispatchEvent(new Event('input', { bubbles: true }));
+            await this.sleep(20);
+        }
+
+        countryInput.dispatchEvent(new Event('change', { bubbles: true }));
+        await this.sleep(100);
 
         // Wait for dropdown and select option
         await this.sleep(500);
@@ -135,7 +173,16 @@ class WebsiteAutomation {
 
     // ===== Get Search Volume =====
     async getSearchVolume() {
-        const submitButton = this.getElementByXpath("//button[@id='submit']");
+        // Try multiple button selectors
+        const submitXPaths = [
+            "//button[@id='submit']",
+            "//button[contains(@id, 'submit')]",
+            "//button[contains(text(), 'Get search volume')]",
+            "//button[contains(text(), 'Get Search Volume')]",
+            "//button[contains(text(), 'search volume')]"
+        ];
+
+        const submitButton = this.getElementWithFallback(submitXPaths);
 
         if (!submitButton) {
             throw new Error('Submit button not found');
@@ -167,7 +214,15 @@ class WebsiteAutomation {
 
     // ===== Download CSV =====
     async downloadCSV() {
-        const csvButton = this.getElementByXpath("//button[@title='Download CSV']");
+        // Try multiple button selectors
+        const csvXPaths = [
+            "//button[@title='Download CSV']",
+            "//button[contains(@title, 'Download')]",
+            "//button[contains(text(), 'CSV')]",
+            "//button[contains(text(), 'Download')]"
+        ];
+
+        const csvButton = this.getElementWithFallback(csvXPaths);
 
         if (!csvButton) {
             throw new Error('Download CSV button not found');
@@ -182,7 +237,15 @@ class WebsiteAutomation {
 
     // ===== Clear Keywords =====
     async clearAllKeywords() {
-        const clearButton = this.getElementByXpath("//button[@title='Clear all keywords']");
+        // Try multiple button selectors
+        const clearXPaths = [
+            "//button[@title='Clear all keywords']",
+            "//button[contains(@title, 'Clear')]",
+            "//button[contains(text(), 'Clear')]",
+            "//button[contains(text(), 'Remove all')]"
+        ];
+
+        const clearButton = this.getElementWithFallback(clearXPaths);
 
         if (!clearButton) {
             throw new Error('Clear keywords button not found');
