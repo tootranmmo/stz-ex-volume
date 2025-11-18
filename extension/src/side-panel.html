@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>STZ Ex Volume Checker - Sidebar</title>
+    <link rel="stylesheet" href="side-panel.css">
+</head>
+<body>
+    <div class="sidebar">
+        <!-- Header -->
+        <header class="header">
+            <h1>STZ Ex Volume Checker</h1>
+            <p class="subtitle">Search Volume Checker</p>
+        </header>
+
+        <!-- Main Content -->
+        <main class="content">
+            <!-- Input Section -->
+            <section class="input-section">
+                <h2>📝 Từ Khóa</h2>
+
+                <!-- Textarea -->
+                <div class="form-group">
+                    <label for="keywords-textarea">Danh sách từ khóa:</label>
+                    <textarea
+                        id="keywords-textarea"
+                        placeholder="Nhập từ khóa, mỗi từ một dòng..."
+                        rows="4"></textarea>
+                    <small>Hoặc upload file txt</small>
+                </div>
+
+                <!-- File Upload -->
+                <div class="form-group">
+                    <label for="file-upload">Upload TXT:</label>
+                    <input type="file" id="file-upload" accept=".txt" />
+                    <small>Mỗi từ khóa trên một dòng</small>
+                </div>
+
+                <!-- Clear Textarea -->
+                <button id="clear-textarea" class="btn btn-secondary btn-small">
+                    Xóa
+                </button>
+            </section>
+
+            <!-- Status Section -->
+            <section class="status-section">
+                <h2>📊 Tiến Trộ</h2>
+
+                <div class="status-info">
+                    <div class="status-item">
+                        <span class="label">Tổng</span>
+                        <span id="total-keywords" class="value">0</span>
+                    </div>
+                    <div class="status-item">
+                        <span class="label">Đã Xử Lý</span>
+                        <span id="checked-keywords" class="value">0</span>
+                    </div>
+                    <div class="status-item">
+                        <span class="label">Trạng Thái</span>
+                        <span id="status-text" class="value status-idle">Sẵn sàng</span>
+                    </div>
+                </div>
+
+                <!-- Progress Bar -->
+                <div class="progress-container">
+                    <div class="progress-bar">
+                        <div id="progress-fill" class="progress-fill"></div>
+                    </div>
+                    <span id="progress-text" class="progress-text">0%</span>
+                </div>
+
+                <!-- Current Batch Info -->
+                <div id="batch-info" class="batch-info" style="display: none;">
+                    <p><strong>Batch:</strong> <span id="current-batch">1</span> / <span id="total-batches">1</span></p>
+                    <p><strong>Từ khóa:</strong> <span id="batch-keywords-count">0</span></p>
+                </div>
+            </section>
+
+            <!-- Settings Section -->
+            <section class="settings-section">
+                <h2>⚙️ Cài Đặt</h2>
+
+                <div class="form-group">
+                    <label for="delay-input">Delay (giây):</label>
+                    <div class="delay-input-group">
+                        <div>
+                            <label for="delay-min">Min:</label>
+                            <input type="number" id="delay-min" min="1" max="30" value="5" />
+                        </div>
+                        <div>
+                            <label for="delay-max">Max:</label>
+                            <input type="number" id="delay-max" min="1" max="60" value="10" />
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Action Buttons -->
+            <section class="action-section">
+                <button id="check-volume-btn" class="btn btn-primary btn-large">
+                    ▶ Kiểm Tra
+                </button>
+                <button id="stop-btn" class="btn btn-danger btn-large" style="display: none;">
+                    ⏹ Dừng
+                </button>
+            </section>
+
+            <!-- History Section -->
+            <section class="history-section">
+                <div class="history-header">
+                    <h2>📜 Lịch Sử</h2>
+                    <button id="clear-history" class="btn btn-secondary btn-small">
+                        Xóa
+                    </button>
+                </div>
+
+                <div id="history-list" class="history-list">
+                    <p class="empty-message">Chưa có</p>
+                </div>
+            </section>
+        </main>
+
+        <!-- Log Section -->
+        <section class="log-section">
+            <h3>📋 Log</h3>
+            <div id="log-container" class="log-container">
+                <p class="log-entry log-info">Sẵn sàng</p>
+            </div>
+        </section>
+    </div>
+
+    <script src="side-panel.js"></script>
+</body>
+</html>

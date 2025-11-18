@@ -14,13 +14,22 @@ chrome.runtime.onInstalled.addListener((details) => {
         chrome.storage.local.set({
             volumeCheckerHistory: [],
             delayMin: 5,
-            delayMax: 10,
-            saveFolder: ''
+            delayMax: 10
         });
     }
 });
 
-// Listen for messages from content script and popup
+// Handle action icon click - open side panel
+chrome.action.onClicked.addListener(async (tab) => {
+    try {
+        await chrome.sidePanel.open({ tabId: tab.id });
+        console.log('Side panel opened for tab:', tab.id);
+    } catch (error) {
+        console.error('Error opening side panel:', error);
+    }
+});
+
+// Listen for messages from content script and side panel
 chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
     if (request.action === 'logMessage') {
         console.log('[' + sender.url + ']', request.message);

@@ -9,15 +9,18 @@
     "scripting",
     "webRequest",
     "tabs",
-    "downloads"
+    "downloads",
+    "sidePanel"
   ],
   "host_permissions": [
     "https://searchvolume.com/*",
     "https://*/*"
   ],
   "action": {
-    "default_popup": "src/popup.html",
     "default_title": "STZ Ex Volume Checker"
+  },
+  "side_panel": {
+    "default_path": "src/side-panel.html"
   },
   "background": {
     "service_worker": "src/background.js"
@@ -35,3 +38,4 @@
     "128": "src/icons/icon-128.png"
   }
 }
+
