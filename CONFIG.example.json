@@ -1,0 +1,48 @@
+{
+  "extension": {
+    "name": "STZ Ex Volume Checker",
+    "version": "1.0.0",
+    "description": "Tự động kiểm tra search volume từ khóa trên searchvolume.com"
+  },
+  "settings": {
+    "delayMin": 5,
+    "delayMax": 10,
+    "keywordsPerBatch": 100,
+    "maxRetries": 3,
+    "timeoutMs": 15000,
+    "maxHistoryItems": 20
+  },
+  "website": {
+    "url": "https://searchvolume.com/",
+    "selectors": {
+      "keywordInput": "//input[@id='tags-input::r7R1::input' and @data-scope='tags-input' and @data-part='input']",
+      "countryInput": "//input[@id='combobox::r0::input' and @data-scope='combobox' and @data-part='input']",
+      "submitButton": "//button[@id='submit']",
+      "downloadCSVButton": "//button[@title='Download CSV']",
+      "clearKeywordsButton": "//button[@title='Clear all keywords']"
+    }
+  },
+  "automation": {
+    "defaultCountry": "Vietnam",
+    "keywordSeparator": "\n",
+    "csvFilenamePattern": "search-volume-{timestamp}.csv",
+    "randomDelayBetweenActions": true,
+    "randomDelayBetweenBatches": true
+  },
+  "ui": {
+    "theme": "light",
+    "colorScheme": {
+      "primary": "#00D4FF",
+      "primaryDark": "#0098CC",
+      "secondary": "#FF6B9D",
+      "success": "#00C853",
+      "danger": "#FF5252",
+      "warning": "#FFB300"
+    }
+  },
+  "logs": {
+    "enabled": true,
+    "maxLogItems": 100,
+    "logLevels": ["info", "success", "warning", "error"]
+  }
+}
